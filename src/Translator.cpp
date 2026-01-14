@@ -650,13 +650,13 @@ bool translateRosActionHandleGoalResponseTag(tinyxml2::XMLElement* root, std::ma
             // Crea il nodo <transition> per "accept"
             tinyxml2::XMLElement* acceptTransition = element->GetDocument()->NewElement("transition");
             acceptTransition->SetAttribute("event", (eventStr ).c_str());
-            acceptTransition->SetAttribute("cond", "_event.data.is_ok");
+            acceptTransition->SetAttribute("cond", "_event.data.call_succeeded == true");
             acceptTransition->SetAttribute("target", acceptState);
 
             // Crea il nodo <transition> per "reject"
             tinyxml2::XMLElement* rejectTransition = element->GetDocument()->NewElement("transition");
             rejectTransition->SetAttribute("event", (eventStr).c_str());
-            rejectTransition->SetAttribute("cond", "_event.data.is_ok == false");
+            rejectTransition->SetAttribute("cond", "_event.data.call_succeeded == false");
             rejectTransition->SetAttribute("target", rejectState);
 
             // Ottieni il genitore dell'elemento corrente
