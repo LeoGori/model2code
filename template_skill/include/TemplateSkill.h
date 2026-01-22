@@ -11,7 +11,7 @@
 #include "$className$SM.h"
 #include <bt_interfaces_dummy/msg/$skillTypeLC$_response.hpp>/*INTERFACES_LIST*/
 /*INTERFACE*/
-#include <$eventData.interfaceName$/srv/$eventData.functionNameSnakeCase$.hpp> /*END_INTERFACE*/
+#include <$eventData.interfaceName$/srv/$eventData.serviceTypeNameSnakeCase$.hpp> /*END_INTERFACE*/
 /*ACTION_INTERFACE*/
 #include <$eventData.interfaceName$/action/$eventData.functionNameSnakeCase$.hpp> /*END_ACTION_INTERFACE*/
 /*TOPIC_INTERFACE*/
