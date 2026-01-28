@@ -40,7 +40,10 @@ bool extractInterfaceData(const fileDataStr fileData, eventDataStr& eventData)
     // open the input file and check if it exists
 
     tinyxml2::XMLElement* element;
-    findInterfaceType(fileData, eventData, element);
+    if (!findInterfaceType(fileData, eventData, element)) {
+        std::cerr << "Failed to find interface type for component '" << eventData.componentName << "' and function '" << eventData.functionName << "' in file '" << fileData.inputFileName << "'."<< std::endl;
+        return false;
+    }
     
     // Only populate interfaceData if we have interface fields that need type information
     if (!eventData.interfaceRequestFields.empty() || !eventData.interfaceResponseFields.empty() || !eventData.interfaceTopicFields.empty()) {
@@ -170,11 +173,11 @@ bool findInterfaceType(const fileDataStr fileData, eventDataStr& eventData, tiny
         if (!findElementByTagAndAttValue(root, std::string("ros_service_send_request"), std::string("name"), std::string("/" + eventData.componentName + "/" + eventData.functionName), fieldParent)) 
         {
             std::cerr << "No ros_service_send_request element found for component '" << eventData.componentName << "' and function '" << eventData.functionName << "' in file '" << fileData.inputFileName << "'."<< std::endl;
-            // return false;
+            return false;
         }
-        if (fieldParent) {
-            add_to_log("fieldParent: " + std::string(fieldParent->Name()) + " at line " + std::to_string(__LINE__));
-        }
+        // if (fieldParent) {
+        //     add_to_log("fieldParent: " + std::string(fieldParent->Name()) + " at line " + std::to_string(__LINE__));
+        // }
         if (!getInterfaceFieldsFromFieldTag(fieldParent, eventData.interfaceRequestFields))
         {
             std::cerr << "Failed to get interface ros_service_send_request fields for component '" << eventData.componentName << "' and function '" << eventData.functionName << "' in file '" << fileData.inputFileName << "'."<< std::endl;
@@ -187,7 +190,7 @@ bool findInterfaceType(const fileDataStr fileData, eventDataStr& eventData, tiny
         if (!findElementByTagAndAttValue(root, std::string("ros_service_handle_response"), std::string("name"), std::string("/" + eventData.componentName + "/" + eventData.functionName), responseParent)) 
         {
             std::cerr << "No ros_service_handle_response element found for component '" << eventData.componentName << "' and function '" << eventData.functionName << "' in file '" << fileData.inputFileName << "'."<< std::endl;
-            // return false;
+            return false;
         }
         if(responseParent) 
         {

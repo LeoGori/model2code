@@ -324,6 +324,7 @@ void handleGenericEvent(const eventDataStr eventData, const savedCodeStr savedCo
             //H
             replaceAll(interfaceCodeH, "$eventData.interfaceName$", eventData.interfaceName);
             replaceAll(interfaceCodeH, "$eventData.functionNameSnakeCase$", eventData.functionNameSnakeCase);
+            replaceAll(interfaceCodeH, "$eventData.serviceTypeNameSnakeCase$", eventData.serviceTypeNameSnakeCase);
             writeAfterCommand(str, "/*INTERFACES_LIST*/", interfaceCodeH);
             
             //CMakeLists.txt
