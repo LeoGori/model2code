@@ -733,7 +733,9 @@ bool Translator(fileDataStr& fileData){
     getDataFromRootNameHighLevel(root->Attribute("name"), skillData);
 
     // Add log print for each state entry
-    addLogToStateEntries(&doc, root);
+    if (fileData.debug_mode) {
+        addLogToStateEntries(&doc, root);
+    }
 
     // Get Skill Type
     tinyxml2::XMLElement* haltServerElement;
