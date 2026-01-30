@@ -613,6 +613,39 @@ void insertElementAfter(tinyxml2::XMLElement* parent, tinyxml2::XMLElement* refe
     }
 }
 
+/**
+ * @brief Adds log entries to each state's onentry element
+ * 
+ * @param doc XMLDocument to create new elements
+ * @param root root element from which to start the search
+ * @return true if log entries were successfully added
+ */
+bool addLogToStateEntries(tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* root)
+{
+    std::vector<tinyxml2::XMLElement*> stateVector;
+    findElementVectorByTag(root, std::string("state"), stateVector);
+    
+    for (auto& element : stateVector) {
+        tinyxml2::XMLElement* onEntryElement = element->FirstChildElement("onentry");
+        if (onEntryElement) {
+            tinyxml2::XMLElement* logElement = doc->NewElement("log");
+            std::string logMessage = "Entering state: " + std::string(element->Attribute("id"));
+            logElement->SetAttribute("expr", logMessage.c_str());
+            onEntryElement->InsertFirstChild(logElement);
+        }
+        else {
+            tinyxml2::XMLElement* newOnEntryElement = doc->NewElement("onentry");
+            tinyxml2::XMLElement* logElement = doc->NewElement("log");
+            std::string logMessage = "Entering state: " + std::string(element->Attribute("id"));
+            logElement->SetAttribute("expr", logMessage.c_str());
+            newOnEntryElement->InsertFirstChild(logElement);
+            element->InsertFirstChild(newOnEntryElement);
+        }
+    }
+    
+    return true;
+}
+
 bool translateRosActionHandleGoalResponseTag(tinyxml2::XMLElement* root, std::map<std::string, std::string> nameToActionNameMap)
 {
     std::vector<tinyxml2::XMLElement*> actionHandleGoalRspVector;
@@ -698,6 +731,10 @@ bool Translator(fileDataStr& fileData){
         return false;
     }
     getDataFromRootNameHighLevel(root->Attribute("name"), skillData);
+
+    // Add log print for each state entry
+    addLogToStateEntries(&doc, root);
+
     // Get Skill Type
     tinyxml2::XMLElement* haltServerElement;
     if(findElementByTagAndAttValueContaining(root, std::string("ros_service_server"), std::string("type"), std::string("bt_interfaces_dummy/HaltAction"), haltServerElement) ||
