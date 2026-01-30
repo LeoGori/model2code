@@ -26,6 +26,7 @@ void print_help()
     std::cout << "--template_path \"path/to/template_skill/directory\" ";
     std::cout << "--output_path \"path/to/output/directory\"\n";
     std::cout << "--verbose_mode [to show log]\n";
+    std::cout << "--debug_mode [automatically generate log tags in skills' SM (useful for debugging skills)]\n";
     // std::cout << "--datamodel_mode \n";
     // std::cout << "--translate_mode \n";
     // std::cout << "--generate_mode \n";
@@ -49,7 +50,8 @@ bool handleInputs(int argc, char* argv[], fileDataStr& fileData, templateFileDat
     fileData.datamodel_mode         = false;
     fileData.translate_mode         = false;
     fileData.generate_mode          = false;
-    fileData.verbose_mode               = false;
+    fileData.verbose_mode           = false;
+    fileData.debug_mode             = false;
     templateFileData.templatePath   = templateFilePath;
 
     if (argc == 1)
@@ -96,6 +98,9 @@ bool handleInputs(int argc, char* argv[], fileDataStr& fileData, templateFileDat
         }
         else if (arg == "--verbose_mode") {
             fileData.verbose_mode = true;
+        }
+        else if (arg == "--debug_mode") {
+            fileData.debug_mode = true;
         }
     }
     add_to_log("Args" + fileData.datamodel_mode ? " with datamodel mode" : " without datamodel mode" + fileData.translate_mode ? " with translation mode" : " without translation mode" + fileData.generate_mode ? " with generation mode" : " without generation mode");
