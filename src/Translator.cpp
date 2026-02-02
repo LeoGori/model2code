@@ -630,14 +630,14 @@ bool addLogToStateEntries(tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* root
         if (onEntryElement) {
             tinyxml2::XMLElement* logElement = doc->NewElement("log");
             std::string logMessage = "Entering state: " + std::string(element->Attribute("id"));
-            logElement->SetAttribute("expr", logMessage.c_str());
+            logElement->SetAttribute("label", logMessage.c_str());
             onEntryElement->InsertFirstChild(logElement);
         }
         else {
             tinyxml2::XMLElement* newOnEntryElement = doc->NewElement("onentry");
             tinyxml2::XMLElement* logElement = doc->NewElement("log");
             std::string logMessage = "Entering state: " + std::string(element->Attribute("id"));
-            logElement->SetAttribute("expr", logMessage.c_str());
+            logElement->SetAttribute("label", logMessage.c_str());
             newOnEntryElement->InsertFirstChild(logElement);
             element->InsertFirstChild(newOnEntryElement);
         }
