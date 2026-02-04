@@ -12,6 +12,7 @@
 #include "Data.h"
 #include <filesystem>
 
+#define libVersion LIB_VERSION
 
 /**
  * @brief Get the Event Data from the model and interface files 
@@ -779,6 +780,7 @@ bool Replacer(fileDataStr& fileData, templateFileDataStr& templateFileData)
         replaceAll(it->second, "$skillTypeLC$", skillData.skillTypeLC);
         replaceAll(it->second, "$skillType$", skillData.skillType);
         replaceAll(it->second, "$datetime$", currentDatetime);
+        replaceAll(it->second, "$libVersion$", libVersion);
 
         if(fileData.is_action_skill){
             keepSection(it->second, "/*ACTION*/", "/*END_ACTION*/");
